@@ -1,6 +1,10 @@
-package ar.com.unnoba.playlist.models;
+package ar.edu.unnoba.pdyc2021.mymusic.model;
+
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
+
 
 @Entity
 @Table(name = "songs")
@@ -13,6 +17,12 @@ public class Song {
 
     private String author;
 
+    @Enumerated(value = EnumType.STRING)
+    private Genre genre;
+
+    @OneToMany(mappedBy = "song",fetch = FetchType.LAZY)
+    private List<PlaylistsSongs> playlistsSongs;
+	    
     public Long getId() {
         return id;
     }
@@ -36,5 +46,20 @@ public class Song {
     public void setAuthor(String author) {
         this.author = author;
     }
+
+	public Genre getGenre() {
+		return genre;
+	}
+
+	public void setGenre(Genre genre) {
+		this.genre = genre;
+	}
+
+
+	public void setPlaylistsSongs(List<PlaylistsSongs> playlistsSongs) {
+		this.playlistsSongs = playlistsSongs;
+	}
+
+
 }
 

@@ -1,8 +1,8 @@
-package ar.com.unnoba.playlist;
-import ar.com.unnoba.playlist.PlaylistApplication;
-
+package ar.edu.unnoba.pdyc2021.mymusic;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import ar.edu.unnoba.pdyc2021.mymusic.PlaylistApplication;
 
 @SpringBootApplication
 public class PlaylistApplication {

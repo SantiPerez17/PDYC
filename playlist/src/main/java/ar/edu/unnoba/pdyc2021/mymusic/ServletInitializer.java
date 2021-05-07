@@ -1,4 +1,4 @@
-package ar.com.unnoba.playlist;
+package ar.edu.unnoba.pdyc2021.mymusic;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
