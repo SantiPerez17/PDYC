@@ -24,4 +24,15 @@ public class PlaylistServiceImp implements PlaylistService {
 		return playlistRepository.findById(id).get();
 	}
 
+	@Override
+	public void deletePlaylist(Long id) {
+		playlistRepository.deleteById(id);
+		
+	}
+
+	@Override
+	public Playlist addPlaylist(Playlist p) {
+		return playlistRepository.save(p);
+	}
+
 }

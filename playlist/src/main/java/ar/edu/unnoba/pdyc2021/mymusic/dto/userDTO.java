@@ -1,7 +1,5 @@
 package ar.edu.unnoba.pdyc2021.mymusic.dto;
 
-import javax.persistence.Id;
-
 public class userDTO {
 	private String email;
 

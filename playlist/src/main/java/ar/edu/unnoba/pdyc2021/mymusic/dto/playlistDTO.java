@@ -1,9 +1,13 @@
 package ar.edu.unnoba.pdyc2021.mymusic.dto;
 
+import java.util.List;
+
+import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
+
 public class playlistDTO {
 	private String name;
-	private userDTO author;
-	//private String emailauthor;
+	private String author;
+	private List<songDTO> songs;
 	
 	public String getName() {
 		return name;
@@ -11,11 +15,17 @@ public class playlistDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public userDTO getAuthor() {
+	public String getAuthor() {
 		return author;
 	}
-	public void setAuthor(userDTO author) {
+	public void setAuthor(String author) {
 		this.author = author;
+	}
+	public List<songDTO> getSongs() {
+		return songs;
+	}
+	public void setSongs(List<songDTO> songs) {
+		this.songs = songs;
 	}
 	
 

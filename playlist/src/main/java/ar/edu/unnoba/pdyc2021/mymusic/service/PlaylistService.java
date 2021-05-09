@@ -10,4 +10,7 @@ public interface PlaylistService {
 
 	public Playlist findPlaylist(Long id);
 
+	public void deletePlaylist(Long id);
+	public Playlist addPlaylist(Playlist p);
+
 }

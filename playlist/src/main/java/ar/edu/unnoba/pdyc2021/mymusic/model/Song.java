@@ -46,7 +46,7 @@ public class Song {
     public void setAuthor(String author) {
         this.author = author;
     }
-
+    @Enumerated(EnumType.STRING)
 	public Genre getGenre() {
 		return genre;
 	}

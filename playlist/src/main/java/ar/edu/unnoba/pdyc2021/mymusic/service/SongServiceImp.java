@@ -48,6 +48,11 @@ public class SongServiceImp implements SongService {
 	}
 	
 	@Override
+	public List<Song> findByAuthorAndGenre(String author,String genre) {
+		return songRepository.findSongsByAuthorAndGenre(author,genre);
+	}
+	
+	@Override
     public Song updateSong(Song song, Long id) {
         Song s = songRepository.findById(id).get();
         if (song.getName()!=null) {s.setName(song.getName());;}

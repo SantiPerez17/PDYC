@@ -15,4 +15,5 @@ public interface SongService {
     public List<Song> findByAuthor(String author);
     public List<Song> findByGenre(String genre);
     public Song updateSong(Song song, Long id);
+	public List<Song> findByAuthorAndGenre(String author,String genre);
 }
