@@ -7,7 +7,6 @@ import java.util.List;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -17,15 +16,12 @@ import javax.ws.rs.core.Response;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import ar.edu.unnoba.pdyc2021.mymusic.dto.playlistDTO;
 import ar.edu.unnoba.pdyc2021.mymusic.dto.songDTO;
-import ar.edu.unnoba.pdyc2021.mymusic.dto.userDTO;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Playlist;
-import ar.edu.unnoba.pdyc2021.mymusic.model.PlaylistsSongs;
+import ar.edu.unnoba.pdyc2021.mymusic.model.Playlists_Songs;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
-import ar.edu.unnoba.pdyc2021.mymusic.model.User;
 import ar.edu.unnoba.pdyc2021.mymusic.service.PlaylistService;
 
 @Path("/playlists")
@@ -42,9 +38,9 @@ public class PlaylistResource {
     		playlistDTO dto=new playlistDTO();
     		dto.setName(p.getName());
     		dto.setAuthor(p.getOwner().getEmail());
-    		List<PlaylistsSongs> playlistsongs= p.getPlaylistsSongs();
+    		List<Playlists_Songs> playlistsongs= p.getPlaylistsSongs();
     		List<Song> canciones = new ArrayList<Song>();
-    		for (PlaylistsSongs s:playlistsongs) {
+    		for (Playlists_Songs s:playlistsongs) {
     			canciones.add(s.getSong());
     		}
     		ModelMapper modelMapper = new ModelMapper();
@@ -75,9 +71,9 @@ public class PlaylistResource {
     	playlistDTO playlistdto = new playlistDTO();
     	playlistdto.setName(list.getName());
     	playlistdto.setAuthor(list.getOwner().getEmail());
-    	List<PlaylistsSongs> playlistsongs= list.getPlaylistsSongs();
+    	List<Playlists_Songs> playlistsongs= list.getPlaylistsSongs();
     	List<Song> canciones = new ArrayList<Song>();
-		for (PlaylistsSongs s:playlistsongs) {
+		for (Playlists_Songs s:playlistsongs) {
 			canciones.add(s.getSong());
 		}
     	ModelMapper modelMapper = new ModelMapper();
