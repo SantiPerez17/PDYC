@@ -4,9 +4,6 @@ import java.util.List;
 
 import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
 
-/**
- * Created by jpgm on 27/04/21.
- */
 public interface SongService {
     public List<Song> getSongs();
     public Song addSong(Song song);

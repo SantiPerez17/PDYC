@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
 
-/**
- * Created by jpgm on 27/04/21.
- */
+
 
 @Repository("songRepository")
 public interface SongRepository extends JpaRepository<Song,Long>{
