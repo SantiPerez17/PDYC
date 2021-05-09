@@ -37,7 +37,7 @@ public class Playlist {
 	    private User owner;
 	    
 	    @OneToMany(mappedBy = "playlist", fetch = FetchType.EAGER)
-	    private List<PlaylistsSongs> playlistsSongs;
+	    private List<Playlists_Songs> playlists_Songs;
 
 		public Long getId() {
 			return id;
@@ -64,12 +64,12 @@ public class Playlist {
 		}
 
 
-		public void setPlaylistsSongs(List<PlaylistsSongs> playlistsSongs) {
-			this.playlistsSongs = playlistsSongs;
+		public void setPlaylists_Songs(List<Playlists_Songs> playlists_Songs) {
+			this.playlists_Songs = playlists_Songs;
 		}
 
-		public List<PlaylistsSongs> getPlaylistsSongs() {
-			return playlistsSongs;
+		public List<Playlists_Songs> getPlaylists_Songs() {
+			return playlists_Songs;
 		}
  
 	

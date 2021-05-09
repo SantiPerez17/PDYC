@@ -21,7 +21,7 @@ public class Song {
     private Genre genre;
 
     @OneToMany(mappedBy = "song",fetch = FetchType.LAZY)
-    private List<PlaylistsSongs> playlistsSongs;
+    private List<Playlists_Songs> playlists_Songs;
 	    
     public Long getId() {
         return id;
@@ -56,8 +56,8 @@ public class Song {
 	}
 
 
-	public void setPlaylistsSongs(List<PlaylistsSongs> playlistsSongs) {
-		this.playlistsSongs = playlistsSongs;
+	public void setPlaylistsSongs(List<Playlists_Songs> playlists_Songs) {
+		this.playlists_Songs = playlists_Songs;
 	}
 
 

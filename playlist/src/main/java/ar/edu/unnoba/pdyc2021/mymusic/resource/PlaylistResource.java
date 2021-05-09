@@ -23,7 +23,7 @@ import ar.edu.unnoba.pdyc2021.mymusic.dto.playlistDTO;
 import ar.edu.unnoba.pdyc2021.mymusic.dto.songDTO;
 import ar.edu.unnoba.pdyc2021.mymusic.dto.userDTO;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Playlist;
-import ar.edu.unnoba.pdyc2021.mymusic.model.PlaylistsSongs;
+import ar.edu.unnoba.pdyc2021.mymusic.model.Playlists_Songs;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
 import ar.edu.unnoba.pdyc2021.mymusic.model.User;
 import ar.edu.unnoba.pdyc2021.mymusic.service.PlaylistService;
@@ -32,7 +32,7 @@ import ar.edu.unnoba.pdyc2021.mymusic.service.PlaylistService;
 public class PlaylistResource {
 	@Autowired
     private PlaylistService playlistService;
-
+   
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPlaylists(){
@@ -42,9 +42,9 @@ public class PlaylistResource {
     		playlistDTO dto=new playlistDTO();
     		dto.setName(p.getName());
     		dto.setAuthor(p.getOwner().getEmail());
-    		List<PlaylistsSongs> playlistsongs= p.getPlaylistsSongs();
+    		List<Playlists_Songs> playlistsongs= p.getPlaylists_Songs();
     		List<Song> canciones = new ArrayList<Song>();
-    		for (PlaylistsSongs s:playlistsongs) {
+    		for (Playlists_Songs s:playlistsongs) {
     			canciones.add(s.getSong());
     		}
     		ModelMapper modelMapper = new ModelMapper();
@@ -75,9 +75,9 @@ public class PlaylistResource {
     	playlistDTO playlistdto = new playlistDTO();
     	playlistdto.setName(list.getName());
     	playlistdto.setAuthor(list.getOwner().getEmail());
-    	List<PlaylistsSongs> playlistsongs= list.getPlaylistsSongs();
+    	List<Playlists_Songs> playlistsongs= list.getPlaylists_Songs();
     	List<Song> canciones = new ArrayList<Song>();
-		for (PlaylistsSongs s:playlistsongs) {
+		for (Playlists_Songs s:playlistsongs) {
 			canciones.add(s.getSong());
 		}
     	ModelMapper modelMapper = new ModelMapper();
