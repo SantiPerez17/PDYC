@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -17,22 +18,32 @@ import javax.ws.rs.core.Response;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 
+
+import ar.edu.unnoba.pdyc2021.mymusic.dto.editplaylistDTO;
 import ar.edu.unnoba.pdyc2021.mymusic.dto.playlistDTO;
 import ar.edu.unnoba.pdyc2021.mymusic.dto.songDTO;
-import ar.edu.unnoba.pdyc2021.mymusic.dto.userDTO;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Playlist;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Playlists_Songs;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
-import ar.edu.unnoba.pdyc2021.mymusic.model.User;
+import ar.edu.unnoba.pdyc2021.mymusic.repository.SongRepository;
 import ar.edu.unnoba.pdyc2021.mymusic.service.PlaylistService;
+import ar.edu.unnoba.pdyc2021.mymusic.service.SongService;
 
 @Path("/playlists")
 public class PlaylistResource {
 	@Autowired
     private PlaylistService playlistService;
-   
+	
+	@Autowired
+	private SongService songService;
+	
+	@Autowired
+	private SongRepository songR;
+	   
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPlaylists(){
@@ -59,17 +70,21 @@ public class PlaylistResource {
     }
     
     @POST
-    @Path("/add")
     @Produces(MediaType.APPLICATION_JSON)
-    public Playlist addPlaylist(Playlist p)
+    public Response addPlaylist(editplaylistDTO p)
     {
-    	return playlistService.addPlaylist(p);
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String loggedEmail = (String) auth.getPrincipal();
+    	ModelMapper modelMapper = new ModelMapper();
+        Playlist pl = modelMapper.map(p,Playlist.class);    	
+    	playlistService.addPlaylist(pl,loggedEmail);
+    	return Response.status(Response.Status.CREATED).entity("Playlist created with name: " + p.getName()).build();	
     }
     
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCountryById(@PathParam("id") Long id)
+    public Response getPlaylistById(@PathParam("id") Long id)
     {
     	Playlist list = playlistService.findPlaylist(id);
     	playlistDTO playlistdto = new playlistDTO();
@@ -87,23 +102,61 @@ public class PlaylistResource {
     	return Response.ok(playlistdto, MediaType.APPLICATION_JSON).build();
     	
     }
+/*   
+    @POST
+    @Path("/{id}/songs/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String addSong(@PathParam("id") Long id, @RequestBody Song song) {
+    	if (songR.existsById(song.getId()) == true){
+    		playlistService.addSongOnPlaylist(playlistService.findPlaylist(id), song);
+    		return "guardada " + songService.findSong(song.getId()).getName() + " en playlist " + playlistService.findPlaylist(id).getName();
+    	}else {
+		return  "nocsite gola";
+    	}			
+    }
     
     @DELETE
-    @Path("/delete/{id}")
+    @Path("/{id}/songs/{song_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void deletePlaylist(@PathParam("id") Long id)
-    {
-    	playlistService.deletePlaylist(id);
-  
-    }
-   /* @PUT
-    @Path("/edit/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Song updateSong(@RequestBody Song song, @PathParam("id") Long id)
-    {
-    		return songService.updateSong(song, id);
-  
+    public String addSong(@PathParam("id") Long id, @PathParam("song_id") Long song_id) {
+    	if (songR.existsById(songService.findSong(song_id).getId()) == true){
+    		playlistService.deleteSongOnPlaylist(playlistService.findPlaylist(id), songService.findSong(song_id));
+    		return "hola";
+    	}else {
+		return  "nocsite gola";
+    	}			
     }
     
-*/
+  */  
+    @DELETE
+    @Path("/{id}")
+    public Response deletePlaylist(@PathParam("id") long id){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedEmail = (String) auth.getPrincipal();
+        try{
+        	
+            playlistService.deletePlaylist(id,loggedEmail);
+            return Response.ok().build();
+        } catch (Exception e){
+            return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
+        }
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updatePlaylist(@RequestBody editplaylistDTO epl, @PathParam("id") Long id)
+    {
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedEmail = (String) auth.getPrincipal();
+        try{
+        	
+        	playlistService.updatePlaylist(id, epl.getName(),loggedEmail);
+        	 return Response.ok().entity("Playlist updated.").build();
+        } catch (Exception e){
+            return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
+        }
+    }
+    
+
 }

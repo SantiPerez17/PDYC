@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import ar.edu.unnoba.pdyc2021.mymusic.dto.songDTO;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
+import ar.edu.unnoba.pdyc2021.mymusic.model.Genre;
 import ar.edu.unnoba.pdyc2021.mymusic.service.SongService;
 
 /*
@@ -34,7 +36,7 @@ public class SongResource {
 
     @Autowired
     private SongService songService;
-
+/*
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSongs(){
@@ -45,10 +47,10 @@ public class SongResource {
         return Response.ok(list).build();
     }
     
+    */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/filter")
-    public Response getSongs(@QueryParam("author") String author, @QueryParam("genre") String genre) {
+    public Response getSongs(@QueryParam("author") String author, @QueryParam("genre") Genre genre) {
     	List<Song> list = new ArrayList<Song>();
     	if (author != null && genre == null) {
     		list = songService.findByAuthor(author);
@@ -59,6 +61,9 @@ public class SongResource {
     	if( genre!=null && author != null ) {
     			list = songService.findByAuthorAndGenre(author,genre);
     	}
+    	if (genre==null && author==null) {
+    		list = songService.getSongs();
+    	}
     	ModelMapper modelMapper = new ModelMapper();
     	Type ListType = new TypeToken<List<songDTO>>(){}.getType();
     	List<songDTO> listy = modelMapper.map(list, ListType);
@@ -66,50 +71,57 @@ public class SongResource {
     }
     
     @POST
-    @Path("/add")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Song addSong(Song song)
-    {
-    	return songService.addSong(song);
-    }
-    
-    @GET
-    @Path("/filter/author/{author}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Song> hola(@PathParam("author") String author){
-    	return songService.findByAuthor(author);
-    }
-    
-    @GET
-    @Path("/filter/genre/{genre}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Song> chau(@PathParam("genre") String genre){
-    	return songService.findByGenre(genre);
-    }
-    
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createSong(songDTO songDTO){
+        ModelMapper modelMapper = new ModelMapper();
+        Song song = modelMapper.map(songDTO,Song.class);
+        songService.addSong(song);
+        return Response.ok("Added: " + songDTO.toString()).build();
+    }  
     
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Song getCountryById(@PathParam("id") Long id)
+    public Response getSongById(@PathParam("id") Long id)
     {
-    	return songService.findSong(id);
+    	try {
+    		Song song = songService.findSong(id);
+    	ModelMapper modelMapper = new ModelMapper();
+    	Type songType = new TypeToken<songDTO>(){}.getType();
+    	songDTO songdto = modelMapper.map(song, songType);
+    	return Response.ok(songdto).build();
+    	}catch (Exception e) {
+    		return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+    		
+    	}
+    	
     }
     
     @DELETE
-    @Path("/delete/{id}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void deleteSong(@PathParam("id") Long id)
+    public Response deleteSong(@PathParam("id") Long id)
     {
-    	songService.deleteSong(id);
+    	try {
+			songService.deleteSong(id);
+			 return Response.ok("Song deleted.").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+		}
   
     }
     @PUT
-    @Path("/edit/{id}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Song updateSong(@RequestBody Song song, @PathParam("id") Long id)
+    public Response updateSong(@RequestBody songDTO song, @PathParam("id") Long id)
     {
-    		return songService.updateSong(song, id);
+    		try {
+				songService.updateSong(song, id);
+				Song s = songService.findSong(id);
+				return Response.ok("Song " + s.getName() + " updated."  ).build();
+			} catch (Exception e) {
+				return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+			}
   
     }
     
