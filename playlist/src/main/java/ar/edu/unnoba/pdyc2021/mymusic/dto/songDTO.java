@@ -1,7 +1,15 @@
 package ar.edu.unnoba.pdyc2021.mymusic.dto;
 
+import ar.edu.unnoba.pdyc2021.mymusic.model.Genre;
+
 public class songDTO {
-	private String name, author,genre;
+	@Override
+	public String toString() {
+		return "song [name=" + name + ", author=" + author + ", genre=" + genre + "]";
+	}
+
+	private String name, author;
+	private Genre genre;
 
 	public String getName() {
 		return name;
@@ -19,11 +27,11 @@ public class songDTO {
 		this.author = author;
 	}
 
-	public String getGenre() {
+	public Genre getGenre() {
 		return genre;
 	}
 
-	public void setGenre(String genre) {
+	public void setGenre(Genre genre) {
 		this.genre = genre;
 	}
 
