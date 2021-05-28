@@ -2,8 +2,6 @@ package ar.edu.unnoba.pdyc2021.mymusic.dto;
 
 import java.util.List;
 
-import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
-
 public class playlistDTO {
 	private String name;
 	private String author;

@@ -1,9 +1,16 @@
 package ar.edu.unnoba.pdyc2021.mymusic.model;
 
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 @Entity
@@ -21,7 +28,7 @@ public class Song {
     private Genre genre;
 
     @OneToMany(mappedBy = "song",fetch = FetchType.LAZY)
-    private List<PlaylistsSongs> playlistsSongs;
+    private List<Playlists_Songs> playlists_Songs;
 	    
     public Long getId() {
         return id;
@@ -56,8 +63,8 @@ public class Song {
 	}
 
 
-	public void setPlaylistsSongs(List<PlaylistsSongs> playlistsSongs) {
-		this.playlistsSongs = playlistsSongs;
+	public void setPlaylistsSongs(List<Playlists_Songs> playlists_Songs) {
+		this.playlists_Songs = playlists_Songs;
 	}
 
 

@@ -1,10 +1,7 @@
-/**
- * 
- */
+
 package ar.edu.unnoba.pdyc2021.mymusic.model;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,12 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import ar.edu.unnoba.pdyc2021.mymusic.model.*;
 
 /**
  * @author Santiago
@@ -37,7 +31,7 @@ public class Playlist {
 	    private User owner;
 	    
 	    @OneToMany(mappedBy = "playlist", fetch = FetchType.EAGER)
-	    private List<PlaylistsSongs> playlistsSongs;
+	    private List<Playlists_Songs> playlists_Songs;
 
 		public Long getId() {
 			return id;
@@ -64,12 +58,12 @@ public class Playlist {
 		}
 
 
-		public void setPlaylistsSongs(List<PlaylistsSongs> playlistsSongs) {
-			this.playlistsSongs = playlistsSongs;
+		public void setPlaylists_Songs(List<Playlists_Songs> playlists_Songs) {
+			this.playlists_Songs = playlists_Songs;
 		}
 
-		public List<PlaylistsSongs> getPlaylistsSongs() {
-			return playlistsSongs;
+		public List<Playlists_Songs> getPlaylists_Songs() {
+			return playlists_Songs;
 		}
  
 	

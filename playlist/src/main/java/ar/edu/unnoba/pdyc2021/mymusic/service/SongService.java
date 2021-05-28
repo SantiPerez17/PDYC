@@ -3,17 +3,19 @@ package ar.edu.unnoba.pdyc2021.mymusic.service;
 import java.util.List;
 
 import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
+import ar.edu.unnoba.pdyc2021.mymusic.dto.songDTO;
+import ar.edu.unnoba.pdyc2021.mymusic.model.Genre;
 
-/**
- * Created by jpgm on 27/04/21.
- */
 public interface SongService {
     public List<Song> getSongs();
-    public Song addSong(Song song);
-    public Song findSong(Long id);
-    public void deleteSong(Long id);
+    public void addSong(Song song);
+    public Song findSong(Long id) throws Exception;
+    public void deleteSong(Long id) throws Exception;
     public List<Song> findByAuthor(String author);
-    public List<Song> findByGenre(String genre);
-    public Song updateSong(Song song, Long id);
-	public List<Song> findByAuthorAndGenre(String author,String genre);
+    public List<Song> findByGenre(Genre genre);
+    public void updateSong(songDTO song, Long id) throws Exception;
+	public List<Song> findByAuthorAndGenre(String author,Genre genre);
+	public Song findByAuthorAndGenreAndName(String author, Genre genre, String name);
+	public Song checksongDTO(songDTO song);
+	public boolean isExist(Long id);
 }

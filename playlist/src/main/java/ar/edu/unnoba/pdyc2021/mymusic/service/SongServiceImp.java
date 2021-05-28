@@ -1,16 +1,15 @@
 package ar.edu.unnoba.pdyc2021.mymusic.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.edu.unnoba.pdyc2021.mymusic.dto.songDTO;
+import ar.edu.unnoba.pdyc2021.mymusic.model.Genre;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
 import ar.edu.unnoba.pdyc2021.mymusic.repository.SongRepository;
 
-import java.util.List;
-
-/**
- * Created by jpgm on 27/04/21.
- */
 @Service
 public class SongServiceImp implements SongService {
 
@@ -22,20 +21,34 @@ public class SongServiceImp implements SongService {
         return songRepository.findAll();
     }
     
-    public Song findSong(Long id) {
-        return songRepository.findById(id).get();
+    @Override
+	public Song findSong(Long id) throws Exception {
+		if (songRepository.existsById(id)){
+		return songRepository.findById(id).get();
+	}else {
+		throw new Exception("Song not found.");
+	}
+	}
+    
+    @Override
+    public boolean isExist(Long id) {
+    	return songRepository.existsById(id);
     }
+    
 	@Override
-	public Song addSong(Song song) {
-		return songRepository.save(song);
+	public void addSong(Song song) {
+		songRepository.save(song);
 		
 	}
 
 	@Override
-	public void deleteSong(Long id) {
-		// TODO Auto-generated method stub
-		songRepository.deleteById(id);
-	}
+	public void deleteSong(Long id) throws Exception {
+		if (songRepository.existsById(id)){
+			songRepository.deleteById(id);
+		}else {
+			throw new Exception("Song not found.");
+		}
+		}
 
 	@Override
 	public List<Song> findByAuthor(String author) {
@@ -43,22 +56,42 @@ public class SongServiceImp implements SongService {
 	}
 
 	@Override
-	public List<Song> findByGenre(String genre) {
+	public List<Song> findByGenre(Genre genre) {
 		return songRepository.findSongsByGenre(genre);
 	}
 	
 	@Override
-	public List<Song> findByAuthorAndGenre(String author,String genre) {
-		return songRepository.findSongsByAuthorAndGenre(author,genre);
+	public List<Song> findByAuthorAndGenre(String author,Genre genre) {
+		return songRepository.findSongsByAuthorAndGenre(genre,author);
 	}
 	
 	@Override
-    public Song updateSong(Song song, Long id) {
-        Song s = songRepository.findById(id).get();
+	public Song findByAuthorAndGenreAndName(String author,Genre genre,String name) {
+		return songRepository.findByAuthorAndGenreAndName(author, genre, name);
+	}
+	
+	
+	
+	@Override
+    public void updateSong(songDTO song, Long id) throws Exception {
+		try {
+			Song s = songRepository.findById(id).get();
         if (song.getName()!=null) {s.setName(song.getName());;}
         if (song.getAuthor()!=null) {s.setAuthor(song.getAuthor());}
         if (song.getGenre()!=null) {s.setGenre(song.getGenre());}
-        return songRepository.save(s);
+        songRepository.save(s);
+		}
+		catch(Exception e) {
+			throw new Exception("Song not found");
+		}
+        
     }
+
+	@Override
+	public Song checksongDTO(songDTO song){
+			Song s=songRepository.findByAuthorAndGenreAndName(song.getAuthor(), song.getGenre(), song.getName());
+			return s;
+		
+	}
     
 }

@@ -3,47 +3,82 @@ package ar.edu.unnoba.pdyc2021.mymusic.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ar.edu.unnoba.pdyc2021.mymusic.model.User;
 import ar.edu.unnoba.pdyc2021.mymusic.repository.UserRepository;
-@Service
-public class UserServiceImp implements UserService {
+@Service 
+public class UserServiceImp implements UserService{
 
 	 @Autowired
 	 private UserRepository userRepository;
-
+	 
 	 @Override
 	 public List<User> getUsers() {
 		 return userRepository.findAll();
 	    }
 
 	@Override
-	public User addUser(User user) {
-		//encriptar user.getPassword();
+	public User addUser(User user) throws Exception  {
+		if (userRepository.existsByEmail(user.getEmail()) == false){
+		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 		return userRepository.save(user);
+	}else {
+		throw new Exception("There is already a user with that email: " + user.getEmail());
 	}
-
+	}
+	
 	@Override
-	public User findUser(Long id) {
-		// TODO Auto-generated method stub
+	public User findUser(Long id) throws Exception {
+		if (userRepository.existsById(id)){
 		return userRepository.findById(id).get();
+	}else {
+		throw new Exception("User not found.");
+	}
 	}
 
-	@Override
-	public void deleteUser(Long id) {
-		//tiene que ser el id del userlogueado, hay que mandar una validacion con un token que se fije si es el usuario o bien generar roles, y si es admin que lo borre.
-		userRepository.deleteById(id);
-	}
 
 	@Override
-	public User updateUser(User user, Long id) {
-		//aca tiene que pasar lo mismo que arriba, pero para la primer entrega va bien
-		User u = userRepository.findById(id).get();
-        if (user.getEmail()!=null) {u.setEmail(user.getEmail());}
-        //llamar funcion que encripta pass (en caso de que se modifique la pass)
-        if (user.getPassword()!=null) {u.setPassword(user.getPassword());}
-        return userRepository.save(u);
+	public void deleteUser(Long id,String currentUserEmail) throws Exception {
+		User user = userRepository.findByEmail(currentUserEmail);
+		 if(userRepository.existsById(id)==false){
+	            throw new Exception("User not found.");
+        }else{
+        	 if(userRepository.findById(id).get().equals(user)){
+                 userRepository.deleteById(id); 
+                 }  	
+          else {
+            throw new Exception("You cannot delete another user.");
+        }
+	}
+        }
+
+	@Override
+	public void updateUser(User user, Long id, String currentUserEmail) throws Exception {
+		User currentUser = userRepository.findByEmail(currentUserEmail);
+		if(userRepository.findById(id).get().equals(currentUser)) {
+			User u = userRepository.findById(id).get();
+			if (user.getEmail()!=null) {u.setEmail(user.getEmail());}
+			if (user.getPassword()!=null) {u.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));}
+        userRepository.save(u);
+		}else {
+			throw new Exception("You cannot modify another user.");
+		}
+		
+	}
+	
+	@Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return (UserDetails) this.findByEmail(email);
+    }
+
+	@Override
+	public User findByEmail(String email) {
+		// TODO Auto-generated method stub
+		return userRepository.findByEmail(email);
 	}
 
 }
