@@ -15,4 +15,7 @@ public interface SongService {
     public List<Song> findByGenre(Genre genre);
     public void updateSong(songDTO song, Long id) throws Exception;
 	public List<Song> findByAuthorAndGenre(String author,Genre genre);
+	public Song findByAuthorAndGenreAndName(String author, Genre genre, String name);
+	public Song checksongDTO(songDTO song);
+	public boolean isExist(Long id);
 }

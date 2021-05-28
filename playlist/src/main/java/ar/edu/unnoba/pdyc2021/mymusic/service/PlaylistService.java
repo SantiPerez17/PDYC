@@ -7,6 +7,8 @@ import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
 
 public interface PlaylistService {
 	public List<Playlist> getPlaylists();
+	
+	public boolean isExist(Long id);
 
 	public Playlist findPlaylist(Long id);
 
@@ -16,8 +18,8 @@ public interface PlaylistService {
 	
 	public Playlist addPlaylist(Playlist p, String loggedEmail);
 	
-	public String addSongOnPlaylist(Playlist p, Song s );
+	public void addSongOnPlaylist(Playlist p, Song s, String loggedEmail) throws Exception;
 	
-	public void deleteSongOnPlaylist(Playlist p, Song s);
+	public void deleteSongOnPlaylist(Playlist p, Song s, String loggedEmail) throws Exception;
 
 }

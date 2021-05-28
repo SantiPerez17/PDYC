@@ -29,6 +29,7 @@ import ar.edu.unnoba.pdyc2021.mymusic.dto.songDTO;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Playlist;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Playlists_Songs;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
+import ar.edu.unnoba.pdyc2021.mymusic.repository.PlaylistRepository;
 import ar.edu.unnoba.pdyc2021.mymusic.repository.SongRepository;
 import ar.edu.unnoba.pdyc2021.mymusic.service.PlaylistService;
 import ar.edu.unnoba.pdyc2021.mymusic.service.SongService;
@@ -102,32 +103,48 @@ public class PlaylistResource {
     	return Response.ok(playlistdto, MediaType.APPLICATION_JSON).build();
     	
     }
-/*   
+   
     @POST
     @Path("/{id}/songs/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String addSong(@PathParam("id") Long id, @RequestBody Song song) {
-    	if (songR.existsById(song.getId()) == true){
-    		playlistService.addSongOnPlaylist(playlistService.findPlaylist(id), song);
-    		return "guardada " + songService.findSong(song.getId()).getName() + " en playlist " + playlistService.findPlaylist(id).getName();
-    	}else {
-		return  "nocsite gola";
-    	}			
+    public Response addSong(@PathParam("id") Long id, @RequestBody songDTO song) {
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String loggedEmail = (String) auth.getPrincipal();
+	    try {
+	    	Song s = songService.checksongDTO(song);
+	    	if (playlistService.isExist(id)==false) {
+	    		return Response.status(Response.Status.FORBIDDEN).entity("Playlist not found.").build();
+	    		}
+	    	if (s==null) {
+	    		return Response.status(Response.Status.FORBIDDEN).entity("Song not found.").build();
+	    		}
+	    	playlistService.addSongOnPlaylist(playlistService.findPlaylist(id), s, loggedEmail);
+	    	return Response.status(Response.Status.CREATED).entity("Song " + s.getName() + " added to the playlist. ").build();
+	    }catch (Exception e) {
+	    	return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build(); 
+	    }
     }
     
     @DELETE
     @Path("/{id}/songs/{song_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String addSong(@PathParam("id") Long id, @PathParam("song_id") Long song_id) {
-    	if (songR.existsById(songService.findSong(song_id).getId()) == true){
-    		playlistService.deleteSongOnPlaylist(playlistService.findPlaylist(id), songService.findSong(song_id));
-    		return "hola";
-    	}else {
-		return  "nocsite gola";
-    	}			
+    public Response deleteSongSong(@PathParam("id") Long id, @PathParam("song_id") Long song_id) {
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String loggedEmail = (String) auth.getPrincipal();
+	    try {
+	    	if (playlistService.isExist(id)==false) {
+	    		return Response.status(Response.Status.FORBIDDEN).entity("Playlist not found.").build();
+	    		}
+	    	if (songService.isExist(song_id)==false) {
+	    		return Response.status(Response.Status.FORBIDDEN).entity("Song not found.").build();
+	    		}
+	    	playlistService.deleteSongOnPlaylist(playlistService.findPlaylist(id), songService.findSong(song_id), loggedEmail);
+	    	return Response.status(Response.Status.OK).entity("Song deleted. ").build();
+	    }catch (Exception e) {
+	    	return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build(); 
+	    }
     }
     
-  */  
     @DELETE
     @Path("/{id}")
     public Response deletePlaylist(@PathParam("id") long id){

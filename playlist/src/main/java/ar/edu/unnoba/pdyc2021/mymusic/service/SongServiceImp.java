@@ -29,7 +29,12 @@ public class SongServiceImp implements SongService {
 		throw new Exception("Song not found.");
 	}
 	}
-
+    
+    @Override
+    public boolean isExist(Long id) {
+    	return songRepository.existsById(id);
+    }
+    
 	@Override
 	public void addSong(Song song) {
 		songRepository.save(song);
@@ -61,6 +66,13 @@ public class SongServiceImp implements SongService {
 	}
 	
 	@Override
+	public Song findByAuthorAndGenreAndName(String author,Genre genre,String name) {
+		return songRepository.findByAuthorAndGenreAndName(author, genre, name);
+	}
+	
+	
+	
+	@Override
     public void updateSong(songDTO song, Long id) throws Exception {
 		try {
 			Song s = songRepository.findById(id).get();
@@ -74,5 +86,12 @@ public class SongServiceImp implements SongService {
 		}
         
     }
+
+	@Override
+	public Song checksongDTO(songDTO song){
+			Song s=songRepository.findByAuthorAndGenreAndName(song.getAuthor(), song.getGenre(), song.getName());
+			return s;
+		
+	}
     
 }

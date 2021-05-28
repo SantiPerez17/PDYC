@@ -23,5 +23,8 @@ public interface SongRepository extends JpaRepository<Song,Long>{
 	@Query("select s from Song s where s.genre = :genre and s.author = :author")
 	public List<Song> findSongsByAuthorAndGenre(@Param("genre") Genre genre, @Param("author") String author);
 	
+	@Query("select s from Song s where s.genre = :genre and s.author = :author and s.name = :name")
+	public Song findByAuthorAndGenreAndName(@Param("author") String author, @Param("genre") Genre genre, @Param("name") String name);
+	
 }
 
