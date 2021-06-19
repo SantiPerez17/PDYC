@@ -80,6 +80,7 @@ public class SongResource {
         		list = songService.findByAuthor(author);
         	}
        		if (genre != null && author == null) {
+       			
         			list = songService.findByGenre(genre);
         	}
         	if( genre!=null && author != null ) {
