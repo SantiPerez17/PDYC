@@ -24,14 +24,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 import ar.edu.unnoba.pdyc2021.mymusic.dto.editplaylistDTO;
 import ar.edu.unnoba.pdyc2021.mymusic.dto.playlistDTO;
 import ar.edu.unnoba.pdyc2021.mymusic.dto.songDTO;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Playlist;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Playlists_Songs;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
-import ar.edu.unnoba.pdyc2021.mymusic.repository.PlaylistRepository;
 import ar.edu.unnoba.pdyc2021.mymusic.repository.SongRepository;
 import ar.edu.unnoba.pdyc2021.mymusic.service.PlaylistService;
 import ar.edu.unnoba.pdyc2021.mymusic.service.SongService;
@@ -43,6 +41,7 @@ public class PlaylistResource {
 	
 	@Autowired
 	private SongService songService;
+
 	
 	@Autowired
 	private SongRepository songR;
@@ -72,32 +71,7 @@ public class PlaylistResource {
             response.resume(Response.ok(list1).build());
         });
     }
-	/*
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getPlaylists(){
-    	List<Playlist> playlists = playlistService.getPlaylists();
-    	List<playlistDTO> list=new ArrayList<playlistDTO>();
-    	for (Playlist p:playlists) {
-    		playlistDTO dto=new playlistDTO();
-    		dto.setName(p.getName());
-    		dto.setAuthor(p.getOwner().getEmail());
-    		List<Playlists_Songs> playlistsongs= p.getPlaylists_Songs();
-    		List<Song> canciones = new ArrayList<Song>();
-    		for (Playlists_Songs s:playlistsongs) {
-    			canciones.add(s.getSong());
-    		}
-    		ModelMapper modelMapper = new ModelMapper();
-        	Type ListSongType = new TypeToken<List<songDTO>>(){}.getType();
-        	List<songDTO> listsongs = modelMapper.map(canciones, ListSongType);
-    		dto.setSongs(listsongs);
-    		list.add(dto);
-    		
-    	}
-    	
-        return Response.ok(list).build();
-    }
-    */
+  
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response addPlaylist(editplaylistDTO p)
@@ -119,6 +93,7 @@ public class PlaylistResource {
     	playlistDTO playlistdto = new playlistDTO();
     	playlistdto.setName(list.getName());
     	playlistdto.setAuthor(list.getOwner().getEmail());
+
     	List<Playlists_Songs> playlistsongs= list.getPlaylists_Songs();
     	List<Song> canciones = new ArrayList<Song>();
 		for (Playlists_Songs s:playlistsongs) {
