@@ -13,6 +13,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -47,7 +49,7 @@ public class SongResource {
         return Response.ok(list).build();
     }
     
-    */
+    
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSongs(@QueryParam("author") String author, @QueryParam("genre") Genre genre) {
@@ -68,6 +70,30 @@ public class SongResource {
     	Type ListType = new TypeToken<List<songDTO>>(){}.getType();
     	List<songDTO> listy = modelMapper.map(list, ListType);
     	return Response.ok(listy).build();
+    }
+    */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public void getSongs(@Suspended AsyncResponse response, @QueryParam("author") String author, @QueryParam("genre") Genre genre){
+        songService.getSongsAsync().thenAccept((list) -> {
+        	if (author != null && genre == null) {
+        		list = songService.findByAuthor(author);
+        	}
+       		if (genre != null && author == null) {
+       			
+        			list = songService.findByGenre(genre);
+        	}
+        	if( genre!=null && author != null ) {
+        			list = songService.findByAuthorAndGenre(author,genre);
+        	}
+        	if (genre==null && author==null) {
+        		list = songService.getSongs();
+        	}
+        	ModelMapper modelMapper = new ModelMapper();
+        	Type ListType = new TypeToken<List<songDTO>>(){}.getType();
+        	List<songDTO> listy = modelMapper.map(list, ListType);
+            response.resume(Response.ok(listy).build());
+        });
     }
     
     @POST

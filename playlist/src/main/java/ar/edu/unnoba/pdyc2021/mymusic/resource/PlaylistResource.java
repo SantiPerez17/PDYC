@@ -12,6 +12,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -40,32 +42,36 @@ public class PlaylistResource {
 	@Autowired
 	private SongService songService;
 
-	   
-    @GET
+	
+	@Autowired
+	private SongRepository songR;
+	
+	
+	@GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPlaylists(){
-    	List<Playlist> playlists = playlistService.getPlaylists();
-    	List<playlistDTO> list=new ArrayList<playlistDTO>();
-    	for (Playlist p:playlists) {
-    		playlistDTO dto=new playlistDTO();
-    		dto.setName(p.getName());
-    		dto.setAuthor(p.getOwner().getEmail());
-    		List<Playlists_Songs> playlistsongs= p.getPlaylists_Songs();
-    		List<Song> canciones = new ArrayList<Song>();
-    		for (Playlists_Songs s:playlistsongs) {
-    			canciones.add(s.getSong());
-    		}
-    		ModelMapper modelMapper = new ModelMapper();
-        	Type ListSongType = new TypeToken<List<songDTO>>(){}.getType();
-        	List<songDTO> listsongs = modelMapper.map(canciones, ListSongType);
-    		dto.setSongs(listsongs);
-    		list.add(dto);
-    		
-    	}
-    	
-        return Response.ok(list).build();
+    public void getPlaylist(@Suspended AsyncResponse response) {
+        playlistService.getPlaylistsAsync().thenAccept((playlists) -> {
+        	List<playlistDTO> list1=new ArrayList<playlistDTO>();
+        	for (Playlist p:playlists) {
+        		playlistDTO dto=new playlistDTO();
+        		dto.setName(p.getName());
+        		dto.setAuthor(p.getOwner().getEmail());
+        		List<Playlists_Songs> playlistsongs= p.getPlaylists_Songs();
+        		List<Song> canciones = new ArrayList<Song>();
+        		for (Playlists_Songs s:playlistsongs) {
+        			canciones.add(s.getSong());
+        		}
+        		ModelMapper modelMapper = new ModelMapper();
+            	Type ListSongType = new TypeToken<List<songDTO>>(){}.getType();
+            	List<songDTO> listsongs = modelMapper.map(canciones, ListSongType);
+        		dto.setSongs(listsongs);
+        		list1.add(dto);
+        		
+        	}
+            response.resume(Response.ok(list1).build());
+        });
     }
-    
+  
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response addPlaylist(editplaylistDTO p)

@@ -1,9 +1,11 @@
 package ar.edu.unnoba.pdyc2021.mymusic.service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -120,6 +122,12 @@ public class PlaylistServiceImp implements PlaylistService {
 	public boolean isExist(Long id) {
 		return playlistRepository.existsById(id);
 	}
+
+	@Override
+    @Async("taskExecutor")
+    public CompletableFuture<List<Playlist>> getPlaylistsAsync() {
+        return CompletableFuture.completedFuture(playlistRepository.findAll());
+    }
 
 		
 	}

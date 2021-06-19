@@ -21,7 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private UserService userService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;    //para encryptar la password en la BD, y no ponerla en texto plano
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public SecurityConfiguration (UserService userService,BCryptPasswordEncoder bCryptPasswordEncoder ){
         this.userService = userService;
@@ -31,6 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
+        		.antMatchers(HttpMethod.POST, "/login").permitAll() 
                 .antMatchers(HttpMethod.GET, "/songs").permitAll()
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .anyRequest().authenticated() 
@@ -41,7 +42,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
-    // clase de capa de servicio que me permite gestionar los usuarios y el mecanismo de encryptacion para el password
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
