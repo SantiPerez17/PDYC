@@ -1,6 +1,7 @@
 package ar.edu.unnoba.pdyc2021.mymusic.service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
 import ar.edu.unnoba.pdyc2021.mymusic.dto.songDTO;
@@ -18,4 +19,5 @@ public interface SongService {
 	public Song findByAuthorAndGenreAndName(String author, Genre genre, String name);
 	public Song checksongDTO(songDTO song);
 	public boolean isExist(Long id);
+	public CompletableFuture<List<Song>> getSongsAsync();
 }

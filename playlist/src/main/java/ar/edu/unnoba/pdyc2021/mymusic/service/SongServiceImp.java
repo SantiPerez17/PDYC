@@ -1,8 +1,10 @@
 package ar.edu.unnoba.pdyc2021.mymusic.service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import ar.edu.unnoba.pdyc2021.mymusic.dto.songDTO;
@@ -93,5 +95,11 @@ public class SongServiceImp implements SongService {
 			return s;
 		
 	}
+
+	@Override
+    @Async("taskExecutor")
+    public CompletableFuture<List<Song>> getSongsAsync() {
+        return CompletableFuture.completedFuture(songRepository.findAll());
+    }
     
 }
