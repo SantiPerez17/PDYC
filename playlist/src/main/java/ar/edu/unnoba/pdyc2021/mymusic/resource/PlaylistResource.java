@@ -30,7 +30,6 @@ import ar.edu.unnoba.pdyc2021.mymusic.dto.songDTO;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Playlist;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Playlists_Songs;
 import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
-import ar.edu.unnoba.pdyc2021.mymusic.repository.SongRepository;
 import ar.edu.unnoba.pdyc2021.mymusic.service.PlaylistService;
 import ar.edu.unnoba.pdyc2021.mymusic.service.SongService;
 
@@ -42,10 +41,6 @@ public class PlaylistResource {
 	@Autowired
 	private SongService songService;
 
-	
-	@Autowired
-	private SongRepository songR;
-	
 	
 	@GET
     @Produces(MediaType.APPLICATION_JSON)

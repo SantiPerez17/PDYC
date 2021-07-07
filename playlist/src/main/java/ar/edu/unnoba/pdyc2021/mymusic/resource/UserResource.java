@@ -4,9 +4,6 @@
 package ar.edu.unnoba.pdyc2021.mymusic.resource;
 
 import java.lang.reflect.Type;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import java.util.List;
 
 import javax.ws.rs.DELETE;
@@ -19,11 +16,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.StatusType;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import ar.edu.unnoba.pdyc2021.mymusic.dto.userDTO;
@@ -66,7 +64,6 @@ public class UserResource {
     }
     
     @POST
-    @Path("/add")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addUser(User user)
     {
