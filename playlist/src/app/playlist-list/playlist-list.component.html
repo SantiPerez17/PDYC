@@ -1,0 +1,19 @@
+<p>playlist-list works!</p>
+<table mat-table class="mat-elevation-z8 demo-table">
+      <thead>
+          <tr>
+              <th>Name</th>
+              <th>Author</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let playlist of playlists">
+            <td> 
+              {{ playlist.name }}
+             </td>
+             <td>
+                {{ playlist.author }}
+             </td>
+          </tr>
+      </tbody>
+</table>

@@ -1,7 +1,6 @@
 package ar.edu.unnoba.pdyc2021.mymusic.resource;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;

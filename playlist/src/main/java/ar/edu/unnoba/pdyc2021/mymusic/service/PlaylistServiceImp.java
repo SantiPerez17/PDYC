@@ -4,10 +4,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import ar.edu.unnoba.pdyc2021.mymusic.model.Playlist;
@@ -16,7 +13,6 @@ import ar.edu.unnoba.pdyc2021.mymusic.model.Song;
 import ar.edu.unnoba.pdyc2021.mymusic.model.User;
 import ar.edu.unnoba.pdyc2021.mymusic.repository.PlaylistRepository;
 import ar.edu.unnoba.pdyc2021.mymusic.repository.Playlists_SongsRepository;
-import ar.edu.unnoba.pdyc2021.mymusic.repository.SongRepository;
 import ar.edu.unnoba.pdyc2021.mymusic.repository.UserRepository;
 
 @Service
@@ -30,16 +26,13 @@ public class PlaylistServiceImp implements PlaylistService {
 	@Autowired
     private Playlists_SongsRepository playlists_songsRepository;
 
-	private SongRepository songRepository;
-
-    @Override
+	@Override
     public List<Playlist> getPlaylists() {
         return playlistRepository.findAll();
     }
 
 	@Override
 	public Playlist findPlaylist(Long id) {
-		// TODO Auto-generated method stub
 		return playlistRepository.findById(id).get();
 	}
 
