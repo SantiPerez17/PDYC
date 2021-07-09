@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
+ 
   constructor(private http: HttpClient) { }
 
   login(email: string, password: string){
@@ -20,5 +22,7 @@ export class AuthenticationService {
       return res;
     }));
   }
-  logout(){localStorage.removeItem('apiKey')}
+  logout(){
+    localStorage.removeItem('apiKey');    
+  }
 }

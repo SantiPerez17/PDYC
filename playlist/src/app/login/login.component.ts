@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
     loading = false;
     submitted = false;
     error = '';
+    token= localStorage.getItem('apiKey')
 
 
   constructor( 
@@ -40,6 +41,8 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['songs']);
 
   }
+
+
   
   onSubmit() {
     this.submitted=true;
@@ -54,7 +57,7 @@ export class LoginComponent implements OnInit {
       },
       
         error => {
-          this.error=error.message+error.stack;
+          this.error='Usuario incorrecto ' + error.message +" " +  error.stack;
           this.loading=false;
         });
   }

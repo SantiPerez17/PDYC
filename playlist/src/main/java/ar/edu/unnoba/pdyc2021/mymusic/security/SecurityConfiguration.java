@@ -1,7 +1,5 @@
 package ar.edu.unnoba.pdyc2021.mymusic.security;
 
-import ar.edu.unnoba.pdyc2021.mymusic.service.UserService;
-
 import java.util.Arrays;
 
 import javax.ws.rs.HttpMethod;
@@ -16,8 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import ar.edu.unnoba.pdyc2021.mymusic.service.UserService;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
