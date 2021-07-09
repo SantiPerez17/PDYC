@@ -10,8 +10,7 @@ import { Song } from '../song';
 export class SongsListComponent implements OnInit {
   songs : Song[];
 
-  constructor(private router: ActivatedRoute, 
-    private songService: SongService) {}
+  constructor(private router: ActivatedRoute, private songService: SongService) {}
 
 
   ngOnInit(){
