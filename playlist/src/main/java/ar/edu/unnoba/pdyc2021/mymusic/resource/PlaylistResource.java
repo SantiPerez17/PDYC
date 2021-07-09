@@ -42,27 +42,28 @@ public class PlaylistResource {
 	private SongService songService;
 
 	
+
 	@GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public void getPlaylist(@Suspended AsyncResponse response) {
-        playlistService.getPlaylistsAsync().thenAccept((playlists) -> {
-        	List<playlistDTO> list1=new ArrayList<playlistDTO>();
-        	for (Playlist p:playlists) {
-        		playlistDTO dto=new playlistDTO();
-        		dto.setName(p.getName());
-        		dto.setAuthor(p.getOwner().getEmail());
-        		List<Playlists_Songs> playlistsongs= p.getPlaylists_Songs();
-        		List<Song> canciones = new ArrayList<Song>();
-        		for (Playlists_Songs s:playlistsongs) {
-        			canciones.add(s.getSong());
-        		}
-        		ModelMapper modelMapper = new ModelMapper();
-            	Type ListSongType = new TypeToken<List<songDTO>>(){}.getType();
-            	List<songDTO> listsongs = modelMapper.map(canciones, ListSongType);
-        		dto.setSongs(listsongs);
-        		list1.add(dto);
+    	@Produces(MediaType.APPLICATION_JSON)
+    	public void getPlaylist(@Suspended AsyncResponse response) {
+        	playlistService.getPlaylistsAsync().thenAccept((playlists) -> {
+        		List<playlistDTO> list1=new ArrayList<playlistDTO>();
+        		for (Playlist p:playlists) {
+        			playlistDTO dto=new playlistDTO();
+        			dto.setName(p.getName());
+        			dto.setAuthor(p.getOwner().getEmail());
+        			List<Playlists_Songs> playlistsongs= p.getPlaylists_Songs();
+        			List<Song> canciones = new ArrayList<Song>();
+        			for (Playlists_Songs s:playlistsongs) {
+        				canciones.add(s.getSong());
+        			}
+        			ModelMapper modelMapper = new ModelMapper();
+            			Type ListSongType = new TypeToken<List<songDTO>>(){}.getType();
+            			List<songDTO> listsongs = modelMapper.map(canciones, ListSongType);
+        			dto.setSongs(listsongs);
+        			list1.add(dto);
         		
-        	}
+        		}
             response.resume(Response.ok(list1).build());
         });
     }
