@@ -15,7 +15,10 @@
 	<description>la plai li</description>
 	<properties>
 		<java.version>11</java.version>
+    <sonar.organization>santiperez17</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
+ 
 	<dependencies>
 	<dependency>
 			<groupId>org.modelmapper</groupId>
