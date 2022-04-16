@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SongService } from '../song.service';
-import { Song } from '../song';
+import { SongService } from '../../song.service';
+import { Song } from '../../Classes/song';
 @Component({
   selector: 'songslist',
   templateUrl: './songslist.component.html',

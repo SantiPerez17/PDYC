@@ -5,9 +5,9 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { PlaylistListComponent } from './playlist-list/playlist-list.component';
-import { SongsListComponent } from './songslist/songslist.component';
+import { LoginComponent } from './Components/login/login.component';
+import { PlaylistListComponent } from './Components/playlist-list/playlist-list.component';
+import { SongsListComponent } from './Components/songslist/songslist.component';
 
 @NgModule({
   declarations: [
