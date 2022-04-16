@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PlaylistService } from '../playlist.service';
-import {Playlist} from '../playlist';
-import { AuthenticationService } from '../authentication.service';
+import { PlaylistService } from '../../playlist.service';
+import {Playlist} from '../../Classes/playlist';
+import { AuthenticationService } from '../../authentication.service';
 @Component({
   selector: 'app-playlist-list',
   templateUrl: './playlist-list.component.html',

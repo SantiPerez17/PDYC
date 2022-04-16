@@ -13,7 +13,7 @@ export class AuthenticationService {
   constructor(private http: HttpClient) { }
 
   login(email: string, password: string){
-    return this.http.post<any>(environment.API_URL+'login',{email,password},{observe: 'response'})
+    return this.http.post<any>( 'http://localhost:8081/login',{email,password},{observe: 'response'})
     .pipe(map(res =>{
       if (res.headers.get("Authorization")){
         localStorage.setItem('apiKey', res.headers.get("Authorization"));
